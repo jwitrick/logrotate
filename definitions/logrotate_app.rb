@@ -17,14 +17,12 @@
 # limitations under the License.
 #
 
-define :logrotate_app, :enable => true, :frequency => "weekly", :template => "logrotate.erb", :cookbook => "logrotate" do
+define :logrotate_app, :enable => true, :frequency => nil, :template => "logrotate.erb", :cookbook => "logrotate", :rotate => nil, :create => nil, :options => [] do
   include_recipe "logrotate"
 
   acceptable_options = ['missingok', 'compress', 'delaycompress', 'copytruncate', 'notifempty', 'delaycompress', 'ifempty', 'mailfirst', 'nocompress', 'nocopy', 'nocopytruncate', 'nocreate', 'nodelaycompress', 'nomail', 'nomissingok', 'noolddir', 'nosharedscripts', 'notifempty', 'sharedscripts']
   path = params[:path].respond_to?(:each) ? params[:path] : params[:path].split
-  create = params[:create] ||= "644 root adm"
-  options_tmp = params[:options] ||= ["missingok", "compress", "delaycompress", "copytruncate", "notifempty"]
-  options = options_tmp.respond_to?(:each) ? options_tmp : options_tmp.split
+  options = params[:options].respond_to?(:each) ? params[:options] : params[:options].split
 
   if params[:enable]
 
@@ -42,7 +40,7 @@ define :logrotate_app, :enable => true, :frequency => "weekly", :template => "lo
       backup false
       variables(
         :path => path,
-        :create => create,
+        :create => params[:create],
         :frequency => params[:frequency],
         :rotate => params[:rotate],
         :options => options
