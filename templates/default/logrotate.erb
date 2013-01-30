@@ -1,10 +1,16 @@
 <% @path.each do |p| -%>
 <%= p %> {
+  <% if @frequency -%>
   <%= @frequency %>
+  <% end -%>
+  <% if @rotate -%>
   rotate <%= @rotate %>
+  <% end -%>
   <% @options.each do |o| -%>
   <%= o %>
   <% end -%>
+  <% if @create -%>
   create <%= @create %>
+  <% end -%>
 }
 <% end -%>
